@@ -61,7 +61,7 @@ Este projeto foi desenvolvido em equipe, unindo especialidades para entregar um 
 
 ### Algumas imagens do projeto:
 <img width="1486" height="906" alt="image" src="https://github.com/user-attachments/assets/5911dfa6-9518-4799-8562-afe045c10efb" />
-<img width="1520" height="856" alt="image" src="https://github.com/user-attachments/assets/31be7cb6-e90c-4d8e-9365-2dcb0d76487f" />\
+<img width="1520" height="856" alt="image" src="https://github.com/user-attachments/assets/31be7cb6-e90c-4d8e-9365-2dcb0d76487f" />
 <img width="1382" height="905" alt="image" src="https://github.com/user-attachments/assets/1859c47e-6f7d-4ade-bbdb-445f0f256de6" />
 
 
