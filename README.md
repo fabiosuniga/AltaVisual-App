@@ -56,8 +56,8 @@ Este projeto foi construído focando em performance, escalabilidade e boas prát
 
 Este projeto foi desenvolvido em equipe, unindo especialidades para entregar um sistema completo e robusto:
 
-* **Fábio Suniga** - *Desenvolvimento Back-end e Arquitetura de Banco de Dados* - [LinkedIn]([https://www.linkedin.com/in/fabio-suniga/]) | [GitHub]([https://github.com/fabiosuniga])
-* **Wesley Rosa** - *Desenvolvimento Front-end (UI/UX) e Quality Assurance (QA)* - [LinkedIn]([https://www.linkedin.com/in/wesleynunesrosa/]) | [GitHub]([https://github.com/wesleyrosa13])
+* **Fábio Suniga** - *Desenvolvimento Back-end e Arquitetura de Banco de Dados* - [LinkedIn](https://www.linkedin.com/in/fabio-suniga/) | [GitHub](https://github.com/fabiosuniga)
+* **Wesley Rosa** - *Desenvolvimento Front-end (UI/UX) e Quality Assurance (QA)* - [LinkedIn](https://www.linkedin.com/in/wesleynunesrosa/) | [GitHub](https://github.com/wesleyrosa13)
 
 ### Algumas imagens do projeto:
 <img width="1486" height="906" alt="image" src="https://github.com/user-attachments/assets/5911dfa6-9518-4799-8562-afe045c10efb" />
