@@ -1,0 +1,175 @@
+﻿@model AltaVisual.Models.Adesivo
+
+@{
+    ViewData["Title"] = "Novo Adesivo";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4 bg-white rounded-4">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">NOVO ADESIVO</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Create" id="formCreateAdesivo">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="LarguraCm" class="form-label fw-bold text-uppercase small">Largura (CM)</label>
+                        <input asp-for="LarguraCm" id="inputLarguraAdesivo" data-val="false" class="form-control rounded-pill" placeholder="Ex: 50" type="text" />
+                        <span asp-validation-for="LarguraCm" class="text-danger" id="erroLargura"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="AlturaCm" class="form-label fw-bold text-uppercase small">Altura (CM)</label>
+                        <input asp-for="AlturaCm" id="inputAlturaAdesivo" data-val="false" class="form-control rounded-pill" placeholder="Ex: 50" type="text" />
+                        <span asp-validation-for="AlturaCm" class="text-danger" id="erroAltura"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Quantidade" class="form-label fw-bold text-uppercase small">Quantidade</label>
+                        <input asp-for="Quantidade" id="inputQuantidade" class="form-control rounded-pill" placeholder="Ex: 10"
+                               type="number" min="1" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+                        <span asp-validation-for="Quantidade" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Descricao" class="form-label fw-bold text-uppercase small">Descrição</label>
+                        <input asp-for="Descricao" id="inputDescricao" class="form-control rounded-pill" placeholder="Ex: Adesivo Vinil Brilho" />
+                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="PrecoBase" class="form-label fw-bold text-uppercase small">Preço por M²</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light rounded-start-pill border-end-0 fw-bold text-muted">R$</span>
+                            <input type="text" asp-for="PrecoBase" id="inputPrecoAdesivo" data-val="false"
+                                   class="form-control rounded-end-pill border-start-0 ps-1" placeholder="0,00" />
+                        </div>
+                        <span asp-validation-for="PrecoBase" class="text-danger" id="erroPreco"></span>
+                    </div>
+
+                    <div class="form-group d-flex gap-3">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 text-uppercase fw-bold">CRIAR</button>
+                        <a asp-action="Index" class="btn btn-dark rounded-pill px-4 text-uppercase">VOLTAR</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            // Sobrescrita do validador jQuery para aceitar formato decimal brasileiro (vírgula)
+            if ($.validator) {
+                $.validator.methods.number = function (value, element) {
+                    return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)?(?:,\d*)?$/.test(value);
+                };
+
+                $.extend($.validator.messages, {
+                    required: "Este campo é obrigatório!",
+                    number: "Por favor, insira um valor válido!",
+                    range: "Por favor, insira um valor válido!"
+                });
+            }
+
+            const $campoPreco = $('#inputPrecoAdesivo');
+            const $formulario = $('#formCreateAdesivo');
+            const $medidas = $('#inputLarguraAdesivo, #inputAlturaAdesivo');
+
+            if (typeof $ !== 'undefined' && $formulario.data('validator')) {
+                $campoPreco.rules('remove', 'number');
+
+                $('#inputDescricao').rules('add', {
+                    required: true,
+                    messages: { required: "A descrição é obrigatória!" }
+                });
+
+                $('#inputQuantidade').rules('add', {
+                    required: true,
+                    min: 1,
+                    messages: {
+                        required: "A quantidade é obrigatória!",
+                        min: "A quantidade deve ser maior que zero!"
+                    }
+                });
+            }
+
+            // --- Validação e formatação dos campos de medidas (CM) ---
+            $medidas.on('keypress', function (event) {
+                if ((event.charCode < 48 || event.charCode > 57) && event.charCode !== 44) return false;
+                if (event.charCode === 44 && $(this).val().includes(',')) return false;
+            });
+
+            $medidas.on('input', function () {
+                let v = $(this).val().replace('.', ',');
+                if (v.includes(',')) {
+                    let partes = v.split(',');
+                    if (partes[1].length > 2) {
+                        v = partes[0] + ',' + partes[1].substring(0, 2);
+                    }
+                }
+                $(this).val(v);
+                $(this).closest('.form-group').find('.text-danger').text('');
+            });
+
+            // --- Formatação monetária (R$) ---
+            function aplicarMascaraPreco(valor) {
+                if (!valor) return "";
+                let v = valor.toString().replace(/\D/g, "");
+                if (v.length === 0) return "";
+                v = (parseInt(v) / 100).toFixed(2).replace(".", ",");
+                v = v.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+                v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
+                return v;
+            }
+
+            $campoPreco.on('input', function () {
+                $(this).val(aplicarMascaraPreco($(this).val()));
+                if ($(this).val() !== "0,00" && $(this).val() !== "") {
+                    $('#erroPreco').text('');
+                }
+            });
+
+            // --- Validação customizada do Submit ---
+            $formulario.on('submit', function (e) {
+                let valido = true;
+
+                let largTexto = $('#inputLarguraAdesivo').val().trim().replace(',', '.');
+                if (!largTexto || parseFloat(largTexto) <= 0 || isNaN(parseFloat(largTexto))) {
+                    $('#erroLargura').text('A largura é obrigatória e deve ser maior que zero!');
+                    valido = false;
+                }
+
+                let altTexto = $('#inputAlturaAdesivo').val().trim().replace(',', '.');
+                if (!altTexto || parseFloat(altTexto) <= 0 || isNaN(parseFloat(altTexto))) {
+                    $('#erroAltura').text('A altura é obrigatória e deve ser maior que zero!');
+                    valido = false;
+                }
+
+                let valorTexto = $campoPreco.val().trim();
+                let valorLimpo = valorTexto.replace(/\./g, "").replace(',', '.');
+                let precoNumerico = parseFloat(valorLimpo);
+
+                if (!valorTexto || valorTexto === "0,00" || isNaN(precoNumerico) || precoNumerico <= 0) {
+                    $('#erroPreco').text('O preço é obrigatório e deve ser de no mínimo R$ 0,01!');
+                    valido = false;
+                }
+
+                if (!valido) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                let valorParaBanco = $campoPreco.val().replace(/\./g, "");
+                $campoPreco.val(valorParaBanco);
+            });
+        });
+    </script>
+}

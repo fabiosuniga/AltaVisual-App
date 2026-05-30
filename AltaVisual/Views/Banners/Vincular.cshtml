@@ -1,0 +1,37 @@
+﻿@model AltaVisual.Models.Banner
+@{
+    ViewData["Title"] = "Vincular a Pedido";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">VINCULAR AO PEDIDO</h2>
+        </div>
+
+        <div class="alert alert-info border-0 shadow-sm mb-4" style="background-color: #e0f2fe; color: #0369a1; border-radius: 15px;">
+            <strong class="text-uppercase small">Produto Selecionado:</strong> <span class="fw-bold">@Model.Descricao</span> <br />
+            <strong class="text-uppercase small">Valor:</strong> <span class="fw-bold">@Model.ValorFinal.ToString("C")</span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Vincular" method="post">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group mb-4">
+                        <label class="form-label fw-bold text-uppercase small text-muted">Selecione o Pedido / Cliente</label>
+                        <select name="PedidoId" class="form-select rounded-pill border-1" asp-items="ViewBag.PedidoId">
+                            <option value="">-- Escolha um Pedido Aberto --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group d-flex gap-3">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 text-uppercase">Confirmar Vínculo</button>
+                        <a asp-action="Index" class="btn btn-dark rounded-pill px-4 text-uppercase">Voltar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

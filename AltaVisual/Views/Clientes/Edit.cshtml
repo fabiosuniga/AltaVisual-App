@@ -1,0 +1,52 @@
+﻿@model AltaVisual.Models.Cliente
+
+@{
+    ViewData["Title"] = "Editar Cliente";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">EDITAR CLIENTE</h2>
+            <h5 class="text-vinho fw-bold mt-2">@Model.Nome</h5>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-lg-6">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Nome" class="form-label fw-bold text-uppercase small text-muted"></label>
+                        <input asp-for="Nome" class="form-control rounded-pill px-4" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="CpfCnpj" class="form-label fw-bold text-uppercase small text-muted">CPF / CNPJ</label>
+                        <input asp-for="CpfCnpj" class="form-control rounded-pill px-4" />
+                        <span asp-validation-for="CpfCnpj" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Telefone" class="form-label fw-bold text-uppercase small text-muted"></label>
+                        <input asp-for="Telefone" class="form-control rounded-pill px-4" />
+                        <span asp-validation-for="Telefone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-flex gap-3">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 text-uppercase fw-bold">SALVAR</button>
+                        <a asp-action="Index" class="btn btn-dark rounded-pill px-4 text-uppercase fw-bold">VOLTAR</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

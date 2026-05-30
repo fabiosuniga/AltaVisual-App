@@ -1,0 +1,52 @@
+﻿@model AltaVisual.Models.Pedido
+
+@{
+    ViewData["Title"] = "Editar Pedido";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">EDITAR PEDIDO</h2>
+            <h5 class="text-vinho fw-bold mt-2">Nº #@Model.Id</h5>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-lg-6">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Data" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="ClienteId" class="form-label fw-bold text-uppercase small text-muted">Cliente</label>
+                        <select asp-for="ClienteId" class="form-select rounded-pill px-4 border-1 bg-light" asp-items="ViewBag.ClienteId"></select>
+                        <span asp-validation-for="ClienteId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Status" class="form-label fw-bold text-uppercase small text-muted">Status do Trabalho</label>
+                        <select asp-for="Status" class="form-select rounded-pill px-4 border-1 bg-light text-uppercase fw-bold">
+                            <option value="Em produção">EM PRODUÇÃO</option>
+                            <option value="Disponível para retirada">DISPONÍVEL PARA RETIRADA</option>
+                            <option value="Pago">PAGO</option>
+                            <option value="Retirado">RETIRADO</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="badge bg-light text-dark border p-2">
+                            <i class="bi bi-clock-history me-1"></i> Criado em: @Model.Data.ToString("dd/MM/yyyy HH:mm")
+                        </span>
+                    </div>
+
+                    <div class="form-group d-flex gap-3">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 text-uppercase fw-bold">SALVAR ALTERAÇÕES</button>
+                        <a asp-action="Index" class="btn btn-dark rounded-pill px-4 text-uppercase fw-bold">VOLTAR</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

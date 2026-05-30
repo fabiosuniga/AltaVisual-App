@@ -1,0 +1,39 @@
+﻿@model AltaVisual.Models.Cliente
+
+@{
+    ViewData["Title"] = "Excluir Cliente";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4 bg-white rounded-4">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">EXCLUIR CLIENTE</h2>
+            <h5 class="text-danger fw-bold mt-2">Você tem certeza que deseja remover este cliente?</h5>
+        </div>
+
+        <hr class="opacity-10 mb-4" />
+
+        <div class="row mb-5 g-4">
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">Nome do Cliente</label>
+                <span class="fs-5 fw-bold">@Html.DisplayFor(model => model.Nome)</span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">CPF / CNPJ</label>
+                <span class="fs-5">@Html.DisplayFor(model => model.CpfCnpj)</span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">Telefone / Celular</label>
+                <span class="fs-5">@Html.DisplayFor(model => model.Telefone)</span>
+            </div>
+        </div>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-primary rounded-pill px-5 text-uppercase fw-bold">CONFIRMAR EXCLUSÃO</button>
+                <a asp-action="Index" class="btn btn-dark rounded-pill px-5 text-uppercase">CANCELAR E VOLTAR</a>
+            </div>
+        </form>
+    </div>
+</div>

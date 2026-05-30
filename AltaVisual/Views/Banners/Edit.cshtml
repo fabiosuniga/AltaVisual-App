@@ -1,0 +1,223 @@
+﻿@model AltaVisual.Models.Banner
+
+@{
+    ViewData["Title"] = "Editar Banner";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4 bg-white rounded-4">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">EDITAR BANNER</h2>
+            <h5 class="text-vinho fw-bold mt-2">ID #@Model.Id</h5>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-lg-6">
+                <form asp-action="Edit" id="formBanner">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Largura" class="form-label fw-bold text-uppercase small text-muted">Largura (m)</label>
+                            <input asp-for="Largura" id="inputLarguraEdit" data-val="false" class="form-control rounded-pill px-4" type="text" />
+                            <span asp-validation-for="Largura" class="text-danger" id="erroLargura"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Altura" class="form-label fw-bold text-uppercase small text-muted">Altura (m)</label>
+                            <input asp-for="Altura" id="inputAlturaEdit" data-val="false" class="form-control rounded-pill px-4" type="text" />
+                            <span asp-validation-for="Altura" class="text-danger" id="erroAltura"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Acabamento" class="form-label fw-bold text-uppercase small text-muted">Acabamento</label>
+                        <select asp-for="Acabamento" class="form-select rounded-pill px-4">
+                            <option value="">-- Selecione o Acabamento --</option>
+                            <option value="Madeira e corda (Banner)">Madeira e corda (Banner)</option>
+                            <option value="Madeira e ilhós (Faixa)">Madeira e ilhós (Faixa)</option>
+                            <option value="Ilhós na volta toda (Lona)">Ilhós na volta toda (Lona)</option>
+                        </select>
+                        <span asp-validation-for="Acabamento" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Descricao" class="form-label fw-bold text-uppercase small text-muted">Descrição</label>
+                        <input asp-for="Descricao" id="inputDescricao" class="form-control rounded-pill px-4" />
+                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Quantidade" class="form-label fw-bold text-uppercase small text-muted">Quantidade</label>
+                            <input asp-for="Quantidade" id="inputQuantidade" class="form-control rounded-pill px-4" type="number" min="1" step="1"
+                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+                            <span asp-validation-for="Quantidade" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-8 mb-3">
+                            <label asp-for="PrecoBase" class="form-label fw-bold text-uppercase small text-muted">Preço por m²</label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-start-pill ps-4 bg-white border-end-0 text-muted fw-bold">R$</span>
+                                <input type="text" asp-for="PrecoBase" id="inputPrecoBanner" data-val="false"
+                                       class="form-control rounded-end-pill pe-4 border-start-0" style="outline: none; box-shadow: none;" />
+                            </div>
+                            <span asp-validation-for="PrecoBase" class="text-danger" id="erroPreco"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-flex gap-3 mt-4">
+                        <button type="submit" class="btn btn-vinho rounded-pill px-5 text-uppercase fw-bold text-white">SALVAR</button>
+                        <a asp-action="Index" class="btn btn-dark rounded-pill px-5 text-uppercase fw-bold">VOLTAR</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            if ($.validator) {
+                $.validator.methods.number = function (value, element) {
+                    return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)?(?:,\d*)?$/.test(value);
+                };
+
+                $.extend($.validator.messages, {
+                    required: "Este campo é obrigatório!",
+                    number: "Por favor, insira um valor válido!",
+                    range: "Por favor, insira um valor válido!"
+                });
+            }
+
+            const $campoPreco = $('#inputPrecoBanner');
+            const $formulario = $('#formBanner');
+            const $medidas = $('#inputLarguraEdit, #inputAlturaEdit');
+
+            if (typeof $ !== 'undefined' && $formulario.data('validator')) {
+                $campoPreco.rules('remove', 'number');
+
+                $('#inputDescricao').rules('add', {
+                    required: true,
+                    messages: { required: "A descrição é obrigatória!" }
+                });
+
+                $('#inputQuantidade').rules('add', {
+                    required: true,
+                    min: 1,
+                    messages: {
+                        required: "A quantidade é obrigatória!",
+                        min: "A quantidade deve ser maior que zero!"
+                    }
+                });
+            }
+
+            // --- LÓGICA DAS MEDIDAS (M) ---
+            $medidas.on('keypress', function (event) {
+                if ((event.charCode < 48 || event.charCode > 57) && event.charCode !== 44) return false;
+                if (event.charCode === 44 && $(this).val().includes(',')) return false;
+            });
+
+            $medidas.on('input', function () {
+                let v = $(this).val().replace('.', ',');
+                if (v.includes(',')) {
+                    let partes = v.split(',');
+                    if (partes[1].length > 2) {
+                        v = partes[0] + ',' + partes[1].substring(0, 2);
+                    }
+                }
+                $(this).val(v);
+                $(this).closest('.form-group, .col-md-6').find('.text-danger').text('');
+            });
+
+            $medidas.each(function() {
+                if ($(this).val()) {
+                    let v = $(this).val().replace('.', ',');
+                    $(this).val(v);
+                }
+            });
+
+            // --- LÓGICA DO PREÇO (R$) ---
+            function aplicarMascara(valor) {
+                if (!valor) return "";
+                let v = valor.toString().replace(/\D/g, "");
+                if (v.length === 0) return "";
+                v = (parseInt(v) / 100).toFixed(2).replace(".", ",");
+                v = v.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+                v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
+                return v;
+            }
+
+            if ($campoPreco.val()) {
+                let valorLimpo = $campoPreco.val().replace(/\D/g, "");
+                $campoPreco.val(aplicarMascara(valorLimpo));
+            }
+
+            $campoPreco.on('input', function () {
+                $(this).val(aplicarMascara($(this).val()));
+                if ($(this).val() !== "0,00" && $(this).val() !== "") {
+                    $('#erroPreco').text('');
+                }
+            });
+
+            $formulario.on('submit', function (e) {
+                let valido = true;
+
+                // Validar Largura
+                let largTexto = $('#inputLarguraEdit').val().trim().replace(',', '.');
+                if (!largTexto || parseFloat(largTexto) <= 0 || isNaN(parseFloat(largTexto))) {
+                    $('#erroLargura').text('A largura é obrigatória!');
+                    valido = false;
+                }
+
+                // Validar Altura
+                let altTexto = $('#inputAlturaEdit').val().trim().replace(',', '.');
+                if (!altTexto || parseFloat(altTexto) <= 0 || isNaN(parseFloat(altTexto))) {
+                    $('#erroAltura').text('A altura é obrigatória!');
+                    valido = false;
+                }
+
+                // Validar Preço
+                let valorTexto = $campoPreco.val().trim();
+                let valorLimpo = valorTexto.replace(/\./g, "").replace(',', '.');
+                let precoNumerico = parseFloat(valorLimpo);
+
+                if (!valorTexto || valorTexto === "0,00" || isNaN(precoNumerico) || precoNumerico <= 0) {
+                    $('#erroPreco').text('O preço é obrigatório e deve ser de no mínimo R$ 0,01!');
+                    valido = false;
+                }
+
+                if (!valido) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                let valorParaBanco = $campoPreco.val().replace(/\./g, "");
+                $campoPreco.val(valorParaBanco);
+            });
+        });
+    </script>
+}
+
+<style>
+    .btn-vinho {
+        background-color: #A51C1C;
+        border: none;
+    }
+
+        .btn-vinho:hover {
+            background-color: #821616;
+        }
+
+    .text-vinho {
+        color: #A51C1C;
+    }
+
+    .main-card {
+        border-radius: 1rem;
+    }
+</style>

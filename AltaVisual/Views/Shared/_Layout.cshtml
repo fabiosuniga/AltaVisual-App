@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AltaVisual</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        html { position: relative; min-height: 100%; }
+        body { margin-bottom: 60px; background-color: #f4f7f9; }
+        .footer { position: absolute; bottom: 0; width: 100%; white-space: nowrap; line-height: 60px; }
+        .main-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f6;
+        }
+    </style>
+</head>
+<body>
+   <header>
+    <div class="top-info-bar">
+        <div class="container-fluid d-flex justify-content-center flex-wrap">
+            <small><i class="bi bi-geo-alt-fill"></i> Avenida Artêmio Dorsa, 200 - Bragança Paulista – SP</small>
+            <small><i class="bi bi-envelope-fill"></i> atendimento@altavisual.com.br</small>
+            <small><i class="bi bi-whatsapp"></i> (11) 2473-6001</small>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-white border-bottom shadow-sm">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center ms-3" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/images/logo-altavisual.png" 
+                 alt="Logo AltaVisual" 
+                 style="height: 100px; width: auto; transition: 0.3s;" 
+                 class="img-fluid py-2"
+                 asp-append-version="true" />
+        </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="menuPrincipal">
+                <ul class="navbar-nav"
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Pedidos" asp-action="Index">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Banners" asp-action="Index">Banners</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Adesivos" asp-action="Index">Adesivos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+    <div class="container mt-5">
+        <main role="main" class="pb-3 main-card">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted bg-white">
+        <div class="container text-center">
+            &copy; 2026 - <span class="fw-bold">AltaVisual</span> - Produção Visual de Qualidade
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

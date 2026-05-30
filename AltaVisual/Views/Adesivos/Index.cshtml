@@ -1,0 +1,53 @@
+﻿@model IEnumerable<AltaVisual.Models.Adesivo>
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4 bg-white rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">ADESIVOS</h2>
+            <a asp-action="Create" class="btn btn-primary rounded-pill px-4 text-uppercase fw-bold">
+                <i class="bi bi-plus-lg me-1"></i> NOVO ADESIVO
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center ps-4 py-3 align-middle">LARGURA<br>(CM)</th>
+                        <th class="text-center py-3 align-middle">ALTURA<br>(CM)</th>
+                        <th class="text-center py-3 align-middle">QTD</th>
+                        <th class="text-start py-3 align-middle">DESCRIÇÃO</th>
+                        <th class="text-center py-3 align-middle">PREÇO POR M²</th>
+                        <th class="text-center py-3 align-middle">TOTAL</th>
+                        <th class="text-center py-3 align-middle" style="min-width: 450px;">AÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center ps-4 fw-bold">@item.LarguraCm</td>
+                            <td class="text-center fw-bold">@item.AlturaCm</td>
+                            <td class="text-center">@item.Quantidade</td>
+                            <td class="text-start">@item.Descricao</td>
+                            <td class="text-center text-nowrap">@item.PrecoBase.ToString("C")</td>
+                            <td class="text-center">
+                                <span class="text-vinho fw-bold text-nowrap">
+                                    @item.ValorFinal.ToString("C")
+                                </span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2 justify-content-center">
+                                    <a asp-action="Vincular" asp-route-id="@item.Id" class="btn btn-success btn-sm rounded-pill px-3 fw-bold text-uppercase">Vincular a Pedido</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-bold text-uppercase">Editar</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-azul btn-sm rounded-pill px-3 fw-bold text-uppercase">Detalhes</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-vinho btn-sm rounded-pill px-3 fw-bold text-uppercase">Excluir</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

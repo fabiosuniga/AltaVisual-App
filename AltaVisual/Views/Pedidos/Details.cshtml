@@ -1,0 +1,97 @@
+﻿@using AltaVisual.Models
+@model AltaVisual.Models.Pedido
+
+@{
+    ViewData["Title"] = "Detalhes do Pedido";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4">
+        
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">DETALHES DO PEDIDO</h2>
+                <h5 class="text-vinho fw-bold mt-2">Nº #@Model.Id</h5>
+            </div>
+            <div class="d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-dark rounded-pill px-4 text-uppercase">Editar</a>
+                <a asp-action="Index" class="btn btn-dark rounded-pill px-4 text-uppercase">Voltar</a>
+            </div>
+        </div>
+
+        <hr class="opacity-10 mb-4" />
+
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">Cliente</label>
+                <span class="fs-5 fw-bold">@Html.DisplayFor(model => model.Cliente.Nome)</span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">Data do Pedido</label>
+                <span class="fs-5">@Model.Data.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h5 class="fw-bold text-uppercase mb-3" style="letter-spacing: 1px;">Itens do Pedido</h5>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>PRODUTO</th>
+                            <th>DETALHES TÉCNICOS</th>
+                            <th>VALOR UNIT. (M²)</th>
+                            <th class="text-end">VALOR FINAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Itens != null && Model.Itens.Any())
+                        {
+                            @foreach (var item in Model.Itens)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@item.Descricao</td>
+                                    <td>
+                                        @if (item is Banner b)
+                                        {
+                                            <span class="badge status-disponivel-azul text-uppercase px-3 py-2">
+                                                LONA | @b.Quantidade UN
+                                            </span>
+                                            @if (!string.IsNullOrEmpty(b.Acabamento))
+                                            {
+                                                <div class="mt-1 small text-muted">
+                                                    <strong>Acabamento:</strong> @b.Acabamento
+                                                </div>
+                                            }
+                                        }
+                                        else if (item is Adesivo a)
+                                        {
+                                            <span class="badge status-pago text-uppercase px-3 py-2">
+                                                ADESIVO | @a.MetrosQuadradosUsados.ToString("0.00") M²
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>@item.PrecoBase.ToString("C")</td>
+                                    <td class="text-end fw-bold">@item.ValorFinal.ToString("C")</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">Nenhum item vinculado a este pedido.</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot class="border-top-2">
+                        <tr>
+                            <td colspan="3" class="text-end fs-5 text-uppercase fw-bold pt-4">Total do Pedido:</td>
+                            <td class="text-end fs-4 text-vinho fw-bold pt-4">@Model.ValorTotalPedido.ToString("C")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

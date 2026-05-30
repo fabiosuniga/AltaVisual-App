@@ -1,0 +1,35 @@
+﻿@model AltaVisual.Models.Adesivo
+@{
+    ViewData["Title"] = "Vincular Adesivo a Pedido";
+}
+
+<div class="container mt-4">
+    <h2>Vincular Adesivo ao Pedido</h2>
+    <hr />
+
+    <div class="alert alert-info">
+        <strong>Produto:</strong> @Model.Descricao <br />
+        <strong>Quantidade:</strong> @Model.Quantidade un. <br />
+        <strong>Valor Total:</strong> @Model.ValorFinal.ToString("C")
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Vincular" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group mb-3">
+                    <label class="control-label fw-bold">Selecione o Pedido / Cliente:</label>
+                    <select name="PedidoId" class="form-select" asp-items="ViewBag.PedidoId">
+                        <option value="">-- Escolha um Pedido Aberto --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Confirmar Vínculo</button>
+                    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

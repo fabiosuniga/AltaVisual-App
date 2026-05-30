@@ -1,0 +1,46 @@
+﻿@model AltaVisual.Models.Pedido
+
+@{
+    ViewData["Title"] = "Excluir Pedido";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4">
+        
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">EXCLUIR PEDIDO</h2>
+            <h5 class="text-danger fw-bold mt-2">Você tem certeza que deseja remover este registro?</h5>
+        </div>
+
+        <hr class="opacity-10 mb-4" />
+
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">Pedido</label>
+                <span class="fs-5 fw-bold text-danger">Nº #@Model.Id</span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">Cliente</label>
+                <span class="fs-5 fw-bold">@Html.DisplayFor(model => model.Cliente.Nome)</span>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-uppercase small text-muted d-block">Data do Pedido</label>
+                <span class="fs-5">@Model.Data.ToString("dd/MM/yyyy HH:mm")</span>
+            </div>
+        </div>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="d-flex gap-3 mt-4">
+                <button type="submit" class="btn btn-primary rounded-pill px-5 text-uppercase">
+                    CONFIRMAR EXCLUSÃO
+                </button>
+                
+                <a asp-action="Index" class="btn btn-dark rounded-pill px-5 text-uppercase">
+                    CANCELAR E VOLTAR
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

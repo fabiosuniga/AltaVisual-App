@@ -1,0 +1,77 @@
+﻿@model AltaVisual.Models.Cliente
+
+@{
+    ViewData["Title"] = "Cadastrar Cliente";
+}
+
+<div class="container mt-4">
+    <div class="main-card shadow-sm p-4 bg-white rounded-4">
+
+        <div class="mb-4">
+            <h2 class="fw-bold mb-0 text-uppercase" style="color: var(--preto-ergo);">NOVO CLIENTE</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Nome" class="form-label fw-bold text-uppercase small">Nome do Cliente</label>
+                        <input asp-for="Nome" class="form-control rounded-pill" placeholder="Digite o nome completo" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="CpfCnpj" class="form-label fw-bold text-uppercase small">CPF / CNPJ</label>
+                        <input asp-for="CpfCnpj" class="form-control rounded-pill" placeholder="000.000.000-00" />
+                        <span asp-validation-for="CpfCnpj" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Telefone" class="form-label fw-bold text-uppercase small">Telefone / Celular</label>
+                        <input asp-for="Telefone" class="form-control rounded-pill" placeholder="(00) 00000-0000" />
+                        <span asp-validation-for="Telefone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group d-flex gap-3">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 text-uppercase fw-bold">CRIAR</button>
+                        <a asp-action="Index" class="btn btn-dark rounded-pill px-4 text-uppercase">VOLTAR</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            var telBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
+            telOptions = {
+                onKeyPress: function (val, e, field, options) {
+                    field.mask(telBehavior.apply({}, arguments), options);
+                },
+                clearIfNotMatch: true
+            };
+            $('#Telefone').mask(telBehavior, telOptions);
+
+            var cpfCnpjBehavior = function (val) {
+                return val.replace(/\D/g, '').length <= 11 ? '000.000.000-00999' : '00.000.000/0000-00';
+            },
+            cpfCnpjOptions = {
+                onKeyPress: function (val, e, field, options) {
+                    field.mask(cpfCnpjBehavior.apply({}, arguments), options);
+                },
+                clearIfNotMatch: true
+            };
+            $('#CpfCnpj').mask(cpfCnpjBehavior, cpfCnpjOptions);
+        });
+    </script>
+}
